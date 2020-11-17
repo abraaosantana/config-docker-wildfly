@@ -1,3 +1,5 @@
+## OBS: TENTAR PASSAR WILDFLY_HOME POR PARAMETROS
+
 # Definindo os comandos abaixo para serem executados em lote
 batch
 
