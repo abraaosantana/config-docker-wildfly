@@ -1,0 +1,20 @@
+# Definindo os comandos abaixo para serem executados em lote
+batch
+
+# Adicionando modulos JDBC Driver
+module add --name=com.postgresql.jre6 --resources=/opt/wildfly/config/driver/postgresql/postgresql-42.2.18.jre6.jar --dependencies=javax.api,javax.transaction.api
+module add --name=com.postgresql.jre7 --resources=/opt/wildfly/config/driver/postgresql/postgresql-42.2.18.jre7.jar --dependencies=javax.api,javax.transaction.api
+module add --name=com.postgresql.jre8ornewer --resources=/opt/wildfly/config/driver/postgresql/postgresql-42.2.18.jre8ornewer.jar --dependencies=javax.api,javax.transaction.api
+
+# Adicionando JDBC Driver PostgreSQL
+/subsystem=datasources/jdbc-driver=postgreSqlJre6:add(driver-name=postgreSqlJre6, driver-module-name=com.postgresql.jre6, driver-class-name=org.postgresql.Driver)
+/subsystem=datasources/jdbc-driver=postgreSqlJre7:add(driver-name=postgreSqlJre7, driver-module-name=com.postgresql.jre7, driver-class-name=org.postgresql.Driver)
+/subsystem=datasources/jdbc-driver=postgreSqlJre8orNewer:add(driver-name=postgreSqlJre8orNewer, driver-module-name=com.postgresql.jre8ornewer, driver-class-name=org.postgresql.Driver)
+
+# Adicionando Datasource
+data-source add --name=PostgreSqlJre6DS --jndi-name=java:jboss/datasources/PostgreSqlJre6DS --driver-name=postgreSqlJre6 --connection-url=jdbc:postgresql://${postgres.host:db}:${postgres.port:5432}/postgres --user-name=postgres --password=postgres --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --validate-on-match=true --background-validation=true
+data-source add --name=PostgreSqlJre7DS --jndi-name=java:jboss/datasources/PostgreSqlJre7DS --driver-name=postgreSqlJre7 --connection-url=jdbc:postgresql://${postgres.host:db}:${postgres.port:5432}/postgres --user-name=postgres --password=postgres --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --validate-on-match=true --background-validation=true
+data-source add --name=PostgreSqlJre8orNewerDS --jndi-name=java:jboss/datasources/PostgreSqlJre8orNewerDS --driver-name=postgreSqlJre8orNewer --connection-url=jdbc:postgresql://${postgres.host:db}:${postgres.port:5432}/postgres --user-name=postgres --password=postgres --valid-connection-checker-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker --exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter --validate-on-match=true --background-validation=true
+
+# Executando lotes
+run-batch
